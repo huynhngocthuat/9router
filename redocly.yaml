@@ -1,0 +1,10 @@
+# Redocly lint config for the 9router OpenAPI spec (public/openapi.json).
+# The spec is a human-facing reference rendered by Scalar and is built in phases,
+# so a few "recommended" rules are intentionally relaxed.
+extends:
+  - recommended
+rules:
+  operation-operationId: off   # Not needed for human docs; revisit if we add codegen.
+  info-license: off            # Internal spec — no separate license block.
+  no-server-example.com: off   # The localhost dev server entry is intentional.
+  no-unused-components: off     # CookieAuth is forward-declared for the Phase 2 /api management surface.

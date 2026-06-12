@@ -70,7 +70,33 @@ export function estimateAnthropicInputTokens(body = {}) {
 }
 
 /**
- * POST /v1/messages/count_tokens - Mock token count response
+ * @swagger
+ * /v1/messages/count_tokens:
+ *   post:
+ *     tags: [Messages]
+ *     summary: Estimate input token count
+ *     description: Returns an approximate input token count (~4 chars/token) for the given messages. Claude-compatible shape.
+ *     security:
+ *       - BearerAuth: []
+ *       - ApiKeyAuth: []
+ *       - CliTokenAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               messages: { type: array, items: { $ref: '#/components/schemas/ChatMessage' } }
+ *     responses:
+ *       200:
+ *         description: Estimated token count.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/CountTokensResponse' } }
+ *       400:
+ *         description: Invalid JSON body.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/Error' } }
  */
 export async function POST(request) {
   let body;
