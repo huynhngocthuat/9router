@@ -89,6 +89,36 @@ export async function OPTIONS() {
   });
 }
 
+/**
+ * @swagger
+ * /v1/models/info:
+ *   get:
+ *     tags: [Models]
+ *     summary: Get metadata for a single model
+ *     security:
+ *       - BearerAuth: []
+ *       - ApiKeyAuth: []
+ *       - CliTokenAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         description: "Full model id, e.g. openai/dall-e-3"
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Model metadata.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/ModelInfo' } }
+ *       400:
+ *         description: Missing id query param.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/Error' } }
+ *       404:
+ *         description: Model not found.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/Error' } }
+ */
 // GET /v1/models/info?id={alias}/{modelId} — metadata for a single model
 export async function GET(request) {
   const { searchParams } = new URL(request.url);

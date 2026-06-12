@@ -21,8 +21,29 @@ export async function OPTIONS() {
 }
 
 /**
- * POST /v1/responses/compact - Compact conversation context
- * Reuses the same handleChat pipeline, signals compact via body._compact
+ * @swagger
+ * /v1/responses/compact:
+ *   post:
+ *     tags: [Responses]
+ *     summary: Compact conversation context
+ *     description: Compacts/summarizes the conversation context. Reuses the chat pipeline with an internal compact flag.
+ *     security:
+ *       - BearerAuth: []
+ *       - ApiKeyAuth: []
+ *       - CliTokenAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json: { schema: { type: object } }
+ *     responses:
+ *       200:
+ *         description: Compacted response.
+ *         content:
+ *           application/json: { schema: { type: object } }
+ *       401:
+ *         description: Missing or invalid API key.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/Error' } }
  */
 export async function POST(request) {
   await ensureInitialized();

@@ -427,8 +427,29 @@ export async function OPTIONS() {
 }
 
 /**
- * GET /v1/models - OpenAI compatible models list (LLM/chat models only by default).
- * For other capabilities use /v1/models/{kind} (image, tts, stt, embedding, image-to-text, web).
+ * @swagger
+ * /v1/models:
+ *   get:
+ *     tags: [Models]
+ *     summary: List available LLM models
+ *     description: OpenAI-compatible model list (LLM/chat models only). For other capabilities use /v1/models/{kind}.
+ *     security:
+ *       - BearerAuth: []
+ *       - ApiKeyAuth: []
+ *       - CliTokenAuth: []
+ *     responses:
+ *       200:
+ *         description: List of models.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/ModelList' } }
+ *       401:
+ *         description: Missing or invalid API key.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/Error' } }
+ *       500:
+ *         description: Server error.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/Error' } }
  */
 export async function GET() {
   try {

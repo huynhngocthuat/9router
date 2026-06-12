@@ -21,8 +21,32 @@ export async function OPTIONS() {
 }
 
 /**
- * GET /v1/models/{kind} - OpenAI-compatible models list filtered by capability.
- * Supported kinds: image, tts, stt, embedding, image-to-text, web.
+ * @swagger
+ * /v1/models/{kind}:
+ *   get:
+ *     tags: [Models]
+ *     summary: List models by capability
+ *     description: OpenAI-compatible model list filtered by service kind.
+ *     security:
+ *       - BearerAuth: []
+ *       - ApiKeyAuth: []
+ *       - CliTokenAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: kind
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [image, tts, stt, embedding, image-to-text, web]
+ *     responses:
+ *       200:
+ *         description: List of models for the requested kind.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/ModelList' } }
+ *       404:
+ *         description: Unknown model kind.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/Error' } }
  */
 export async function GET(_request, { params }) {
   try {

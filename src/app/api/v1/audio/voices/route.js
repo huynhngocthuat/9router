@@ -15,6 +15,37 @@ export async function OPTIONS() {
   });
 }
 
+/**
+ * @swagger
+ * /v1/audio/voices:
+ *   get:
+ *     tags: [Audio]
+ *     summary: List TTS voices for a provider
+ *     security:
+ *       - BearerAuth: []
+ *       - ApiKeyAuth: []
+ *       - CliTokenAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: provider
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [elevenlabs, deepgram, inworld, edge-tts, local-device]
+ *       - in: query
+ *         name: lang
+ *         required: false
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Voices, each with a model id usable in /v1/audio/speech.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/VoiceList' } }
+ *       400:
+ *         description: Unknown or missing provider.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/Error' } }
+ */
 // GET /v1/audio/voices?provider={p}[&lang=xx]
 // Returns OpenAI-style list with each voice's full model id ready for /v1/audio/speech
 export async function GET(request) {

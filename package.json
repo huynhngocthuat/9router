@@ -5,8 +5,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack --port 20128",
+    "prebuild": "npm run openapi:generate",
     "build": "next build --webpack",
     "start": "next start",
+    "openapi:generate": "node scripts/generate-openapi.mjs",
+    "openapi:lint": "redocly lint public/openapi.json",
     "dev:bun": "bun --bun next dev --webpack --port 20128",
     "build:bun": "bun --bun next build --webpack",
     "start:bun": "bun ./.next/standalone/server.js"
@@ -17,6 +20,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@monaco-editor/react": "^4.7.0",
+    "@scalar/nextjs-api-reference": "^0.11.3",
     "@xyflow/react": "^12.10.1",
     "bcryptjs": "^3.0.3",
     "confbox": "^0.2.4",
@@ -48,9 +52,11 @@
   },
   "comment_better_sqlite3": "kept in optionalDependencies so npm install doesn't fail on systems without build tools — sql.js is used as fallback at runtime",
   "devDependencies": {
+    "@redocly/cli": "^2.32.2",
     "@tailwindcss/postcss": "^4.1.18",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "next-swagger-doc": "^0.4.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^4"
   }

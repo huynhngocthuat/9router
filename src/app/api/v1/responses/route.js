@@ -21,8 +21,30 @@ export async function OPTIONS() {
 }
 
 /**
- * POST /v1/responses - OpenAI Responses API format
- * Now handled by translator pattern (openai-responses format auto-detected)
+ * @swagger
+ * /v1/responses:
+ *   post:
+ *     tags: [Responses]
+ *     summary: Create a response (OpenAI Responses API)
+ *     description: OpenAI Responses-format payload, auto-detected and translated to the target provider. Set `stream` to true for an SSE stream.
+ *     security:
+ *       - BearerAuth: []
+ *       - ApiKeyAuth: []
+ *       - CliTokenAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json: { schema: { type: object } }
+ *     responses:
+ *       200:
+ *         description: Responses-format object, or an SSE stream when `stream` is true.
+ *         content:
+ *           application/json: { schema: { type: object } }
+ *           text/event-stream: { schema: { type: string } }
+ *       401:
+ *         description: Missing or invalid API key.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/Error' } }
  */
 export async function POST(request) {
   await ensureInitialized();

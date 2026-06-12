@@ -14,7 +14,28 @@ export async function OPTIONS() {
 }
 
 /**
- * POST /v1/embeddings - OpenAI-compatible embeddings endpoint
+ * @swagger
+ * /v1/embeddings:
+ *   post:
+ *     tags: [Embeddings]
+ *     summary: Create embeddings (OpenAI-compatible)
+ *     security:
+ *       - BearerAuth: []
+ *       - ApiKeyAuth: []
+ *       - CliTokenAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json: { schema: { $ref: '#/components/schemas/EmbeddingRequest' } }
+ *     responses:
+ *       200:
+ *         description: Embedding vectors.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/EmbeddingResponse' } }
+ *       401:
+ *         description: Missing or invalid API key.
+ *         content:
+ *           application/json: { schema: { $ref: '#/components/schemas/Error' } }
  */
 export async function POST(request) {
   return await handleEmbeddings(request);
