@@ -184,6 +184,24 @@ export const __test__ = {
 export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
+  // CORS preflight must never require auth: browsers send OPTIONS without the
+  // Authorization header, so gating it returns 401 with no CORS headers and the
+  // browser blocks the real request. Answer preflight for LLM API paths here,
+  // before any auth check, so the route-level OPTIONS handlers stay authoritative
+  // for their allowed methods/headers.
+  if (request.method === "OPTIONS" && isPublicLlmApi(pathname)) {
+    return new NextResponse(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": request.headers.get("origin") || "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": request.headers.get("access-control-request-headers") || "*",
+        "Access-Control-Max-Age": "86400",
+        "Vary": "Origin",
+      },
+    });
+  }
+
   // Local-only gate for spawn-capable / host-secret routes.
   if (LOCAL_ONLY_PATHS.some((p) => pathname.startsWith(p))) {
     if (!(await canAccessLocalOnlyRoute(request))) {
